@@ -405,6 +405,13 @@
 						<onclick>RunApp(app://com.navix.stable/)</onclick>
 					</item>
 					<item>
+						<visible>StringCompare(Skin.String(homeenabled-movies),1) + StringCompare(Skin.String(home-movies-replacement),Navi-X-Remix)</visible>
+						<controlid>129</controlid>
+						<thumb>../720p/resources/icons/icon-home-navix.png</thumb>
+						<label>53913</label>
+						<onclick>RunApp(app://com.navix.main/)</onclick>
+					</item>
+					<item>
 						<visible>StringCompare(Skin.String(homeenabled-music),1) + [IsEmpty(Skin.String(home-music-replacement)) | StringCompare(Skin.String(home-music-replacement),Built-in)]</visible>
 						<controlid>122</controlid>
 						<thumb>../720p/resources/icons/icon-home-music.png</thumb>
