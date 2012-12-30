@@ -103,7 +103,7 @@ def toggle_homeenabled(section, action):
         if section == "shows":
             types = ["Built-in", "BBC iPlayer", "Revision3", "Crunchyroll", "Off"]
         if section == "movies":
-            types = ["Built-in", "Netflix", "Vudu", "Navi-X", "Off"]
+            types = ["Built-in", "Netflix", "Vudu", "Navi-X", "Navi-X-Remix", "Off"]
         if section == "music":
             types = ["Built-in", "Spotify", "Grooveshark", "Off"]
 
