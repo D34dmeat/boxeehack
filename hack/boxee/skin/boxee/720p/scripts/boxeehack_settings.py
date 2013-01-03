@@ -35,7 +35,7 @@ key = C2FAFCBE34610608
         xbmc.executebuiltin("Skin.SetString(boxeeplus-version,%s)" % version_local )
 
 def get_home_enabled_default_list():
-    return "-,friends,watchlater,shows|Built-in,movies|Built-in,music|Built-in,apps,files,web,navix"
+    return "-,friends,watchlater,shows|Built-in,movies|Built-in,music|Built-in,apps,files,web"
     
 def set_home_enabled_strings():
     homeitems = get_home_enabled_default_list().split(",")
