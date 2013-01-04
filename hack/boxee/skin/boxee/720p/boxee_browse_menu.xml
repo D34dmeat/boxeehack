@@ -194,9 +194,9 @@
 				<animation type="Conditional" condition="StringCompare(Skin.String(homeenabled-web),1)">
 					<effect type="slide" start="0" end="-59" time="200" delay="0"/>
 				</animation>
-				<posx>655</posx>
+				<posx>605</posx>
 				<posy>232</posy>
-				<width>910</width>
+				<width>1025</width>
 				<height>200</height>
 				<onup>11011</onup>
 				<onleft>-</onleft>

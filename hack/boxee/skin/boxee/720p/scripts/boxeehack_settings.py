@@ -29,6 +29,7 @@ key = C2FAFCBE34610608
 """)
     
     set_home_enabled_strings()
+    set_menu_enabled_strings()
 
     version_local = get_local_version()
     if version_local != "":
@@ -36,6 +37,10 @@ key = C2FAFCBE34610608
 
 def get_home_enabled_default_list():
     return "-,friends,watchlater,shows|Built-in,movies|Built-in,music|Built-in,apps,files,web,bbc,revision3,crunchyroll,netflix,vudu,navix,spotify,grooveshark,navixr"
+
+def get_menu_enabled_default_list():
+    return "-,friends,watchlater,shows,movies,music,apps,files,web,bbc,revision3,crunchyroll,netflix,vudu,navix,spotify,grooveshark,navixr"
+
     
 def set_home_enabled_strings():
     homeitems = get_home_enabled_default_list().split(",")
@@ -44,6 +49,12 @@ def set_home_enabled_strings():
         item = item.split("|")[0]
         xbmc.executebuiltin("Skin.SetString(homeenabled-%s,%s)" % (item, get_homeenabled(item)))
         xbmc.executebuiltin("Skin.SetString(home-%s-replacement,%s)" % (item, get_homereplacement(item)))
+
+def set_menu_enabled_strings():
+    menuitems = get_menu_enabled_default_list().split(",")
+
+    for item in menuitems:
+        xbmc.executebuiltin("Skin.SetString(menuenabled-%s,%s)" % (item, get_menuenabled(item)))
 
 def get_jump_to_last_unwatched_value():
     jumpenabled = common.file_get_contents("/data/etc/.jump_to_unwatched_enabled")
@@ -68,6 +79,12 @@ def get_homeenabled_value():
         homeenabled = get_home_enabled_default_list()
     return homeenabled.split("\n")[0]
 
+def get_menuenabled_value():
+    menuenabled = common.file_get_contents("/data/etc/.menu_enabled")
+    if menuenabled == "":
+        menuenabled = get_menu_enabled_default_list()
+    return menuenabled.split("\n")[0]
+
 def get_homereplacement(section):
     homeenabled = get_homeenabled_value().split(",")
     
@@ -91,6 +108,16 @@ def get_homeenabled(section):
     section = "%s" % section
     for item in homeenabled:
         item = item.split("|")[0]
+        if item == section:
+            return "1"
+
+    return "0"
+
+def get_menuenabled(section):
+    menuenabled = get_menuenabled_value().split(",")
+    
+    section = "%s" % section
+    for item in menuenabled:
         if item == section:
             return "1"
 
@@ -141,6 +168,20 @@ def toggle_homeenabled(section, action):
 
     common.file_put_contents("/data/etc/.home_enabled", ",".join(homeenabled))
     set_home_enabled_strings()
+
+def toggle_menuenabled(section, action):
+    menuenabled = get_menuenabled_value().split(",")
+    found = 0
+    for item in menuenabled:
+        if item == section:
+         menuenabled.remove(item)
+         found = 1
+    
+    if found == 0:
+        menuenabled.append(section)
+
+    common.file_put_contents("/data/etc/.menu_enabled", ",".join(menuenabled))
+    set_menu_enabled_strings()
 
 def get_browser_homepage():
     homepage = common.file_get_contents("/data/etc/.browser_homepage")
@@ -432,6 +473,7 @@ def check_utorrentserver():
     
     file_put_contents("/data/etc/utorrent", tmp)
     os.system("sh /data/hack/utorrent.sh")
+
 if (__name__ == "__main__"):
     command = sys.argv[1]
 
@@ -448,8 +490,10 @@ if (__name__ == "__main__"):
     if command == "telnets": check_telnetserver()
     if len(sys.argv) == 4:
         if command == "homeenabled": toggle_homeenabled(sys.argv[2], sys.argv[3])
+        if command == "menuenabled": toggle_menuenabled(sys.argv[2], sys.argv[3])
     else:
         if command == "homeenabled": toggle_homeenabled(sys.argv[2], "")
+        if command == "menuenabled": toggle_menuenabled(sys.argv[2], "")
         
     if command == "browser-homepage": set_browser_homepage()
     if command == "toggle-jump-to-last-unwatched": toggle_jump_to_last_unwatched()
