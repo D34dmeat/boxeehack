@@ -422,6 +422,38 @@ def check_new_version():
         dialog.ok("BOXEE+HACKS Version", "Your BOXEE+ version is up to date.")
     else:
         dialog.ok("BOXEE+HACKS Version", "Hi there Doc Brown. How's the future?")
+
+def excessive_force_update():
+    version_remote = get_remote_version()
+    version_local = get_local_version()
+    
+    version_remote_parts = version_remote.split(".")
+    version_local_parts = version_local.split(".")
+
+    hasnew = 0
+    if version_remote_parts[0] > version_local_parts[0]:
+        hasnew = 1
+    elif version_remote_parts[0] == version_local_parts[0]:
+        if version_remote_parts[1] > version_local_parts[1]:
+            hasnew = 1
+        elif version_remote_parts[1] == version_local_parts[1]:
+            if version_remote_parts[2] > version_local_parts[2]:
+                hasnew = 1
+    issame = 0
+    if version_remote_parts[0] == version_local_parts[0]:
+        if version_remote_parts[1] == version_local_parts[1]:
+            if version_remote_parts[2] == version_local_parts[2]:
+                issame = 1
+
+    dialog = xbmcgui.Dialog()
+    if hasnew:
+        if dialog.yesno("BOXEE+HACKS Version", "A new version of BOXEE+ is available. Upgrade to %s now?" % (version_remote)):
+            os.system("sh /data/hack/upgrade.sh")
+    elif issame:
+        if dialog.yesno("BOXEE+HACKS Force Update", "Your BOXEE+HACKS version is up to date. Would you still like to install %s now?" % (version_remote)):
+            os.system("sh /data/hack/upgrade.sh")
+    else:
+        dialog.ok("BOXEE+HACKS Version", "Hi there Doc Brown. How's the future?")
 def check_webserver():
     tmp = file_get_contents("/data/etc/www")
     
@@ -480,6 +512,7 @@ if (__name__ == "__main__"):
     if command == "telnet": set_telnet_password()
     if command == "subtitles": toggle_subtitles(sys.argv[2], sys.argv[3])
     if command == "version": check_new_version()
+    if command == "force-update": excessive_force_update()
     if command == "defaults": register_defaults()
     if command == "subtitles-provider": subtitle_provider("set", sys.argv[2], sys.argv[3])
     if command == "featured_next": featured_next()
